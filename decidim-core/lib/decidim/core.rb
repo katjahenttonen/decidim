@@ -3,7 +3,6 @@
 require "decidim/core/engine"
 require "decidim/core/api"
 require "decidim/core/version"
-
 # Decidim configuration.
 module Decidim
   autoload :TranslatableAttributes, "decidim/translatable_attributes"
@@ -49,6 +48,8 @@ module Decidim
   autoload :EngineRouter, "decidim/engine_router"
   autoload :Events, "decidim/events"
   autoload :ViewHooks, "decidim/view_hooks"
+  autoload :ContentBlockRegistry, "decidim/content_block_registry"
+  autoload :ContentBlockManifest, "decidim/content_block_manifest"
   autoload :NewsletterEncryptor, "decidim/newsletter_encryptor"
   autoload :Searchable, "decidim/searchable"
   autoload :SearchResourceFieldsMapper, "decidim/search_resource_fields_mapper"
@@ -62,9 +63,9 @@ module Decidim
   autoload :DataPortabilitySerializers, "decidim/data_portability_serializers"
   autoload :DataPortabilityFileReader, "decidim/data_portability_file_reader"
   autoload :DataPortabilityFileZipper, "decidim/data_portability_file_zipper"
+  autoload :Gamification, "decidim/gamification"
 
   include ActiveSupport::Configurable
-
   # Loads seeds from all engines.
   def self.seed!
     # Faker needs to have the `:en` locale in order to work properly, so we
@@ -78,7 +79,17 @@ module Decidim
       railtie.load_seed
     end
 
-    Decidim.participatory_space_manifests.each(&:seed!)
+    participatory_space_manifests.each(&:seed!)
+    Gamification.badges.each do |badge|
+      puts "Setting random values for the \"#{badge.name}\" badge..."
+      User.all.find_each do |user|
+        Gamification::BadgeScore.find_or_create_by!(
+          user: user,
+          badge_name: badge.name,
+          value: Random.rand(0...20)
+        )
+      end
+    end
 
     I18n.available_locales = original_locale
   end
@@ -92,7 +103,7 @@ module Decidim
 
   # Exposes a configuration option: The application available locales.
   config_accessor :available_locales do
-    %w(en ca es es-PY eu fi fr gl it nl pt pt-BR ru sv uk)
+    %w(en ca es es-PY eu fi fr gl hu it nl pt pt-BR ru sv uk)
   end
 
   # Exposes a configuration option: an array of symbols representing processors
@@ -154,6 +165,11 @@ module Decidim
   # Exposes a configuration option: the currency unit
   config_accessor :currency_unit do
     "€"
+  end
+
+  # Exposes a configuration option: The image uploader quality.
+  config_accessor :image_uploader_quality do
+    80
   end
 
   # Exposes a configuration option: The maximum file size of an attachment.
@@ -352,6 +368,11 @@ module Decidim
   # Public: Stores an instance of ViewHooks
   def self.view_hooks
     @view_hooks ||= ViewHooks.new
+  end
+
+  # Public: Stores an instance of ContentBlockRegistry
+  def self.content_blocks
+    @content_blocks ||= ContentBlockRegistry.new
   end
 
   # Public: Stores an instance of Traceability
