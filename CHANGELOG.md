@@ -14,7 +14,7 @@
   engine, you probably want to add `paths["lib/tasks"] = nil` to all engines but
   the main one, otherwise the tasks you define are probably running multiple
   times unintentionally. Check
-  [\#3890](https://github.com/decidim/decidim/pull/3890) for more details.
+  [\#3892](https://github.com/decidim/decidim/pull/3892) for more details.
 
 - Image compression settings :
   The quality settings can be set in Decidim initializer with
@@ -40,9 +40,18 @@
   Be careful when playing with this feature on production.
   Check [\#3984](https://github.com/decidim/decidim/pull/3984) for more details.
 
+- **Badges**: Badges are introduced in the `0.14` as a way to add gamification and
+  increase the amount of user interaction. In order to generate the scores of all
+  the badges, please run an IRB session via `rails console` and execute:
+
+  ```ruby
+  Decidim::Gamification.reset_badges
+  ```
+
 **Added**:
 
 - **decidim-initiatives**: Initiative printable form now includes the initiative type. [\#3938](https://github.com/decidim/decidim/pull/3938)
+- **decidim-assemblies**: Add the posibility to select the parent assembly when the assembly is created or edited [\#4022](https://github.com/decidim/decidim/pull/4022)
 - **decidim-admin**:Add link to user profile and link to conversation from admin space. [\#3995](https://github.com/decidim/decidim/pull/3995)
 - **decidim-core**:Add compression settings to image uploader [\#3984](https://github.com/decidim/decidim/pull/3984)
 - **decidim-budgets**: Import accepted proposals to projects. [\#3873](https://github.com/decidim/decidim/pull/3873)
@@ -58,9 +67,18 @@
 - **decidim-meetings**: Allow admins to validate meeting registration codes and notify the user. [\#3833](https://github.com/decidim/decidim/pull/3833)
 - **decidim-core**: Make Users Searchable. [\#3796](https://github.com/decidim/decidim/pull/3796)
 - **decidim-participatory_processes**: Highlight the correct menu item when visiting a process group page [\#3737](https://github.com/decidim/decidim/pull/3737)
+- **decidim-proposals**: Add Collaborative drafts: [\#3109](https://github.com/decidim/decidim/pull/3109)
+  - Admin can en/disable this feature from the component configuration
+  - Filtrable list of Collaborative drafts in public views
+  - Collaborative drafts are: traceable, commentable, coauthorable, reportable
+  - Publish collaborative draft as Proposal
 - **decidim-participatory_processes**: Display a big card when there's just one process at the homepage [\#3970](https://github.com/decidim/decidim/pull/3970)
 - **decidim-core**: Adds support for earning badges. [\#3975](https://github.com/decidim/decidim/pull/3975)
 - **decidim-proposals**: Adds the *proposal* badge. [\#3975](https://github.com/decidim/decidim/pull/3975)
+- **decidim-proposals**: Adds the *proposal supports* badge. [\#4033](https://github.com/decidim/decidim/pull/4033)
+- **decidim-proposals**: Adds the *accepted proposals* badge. [\#4033](https://github.com/decidim/decidim/pull/4033)
+- **decidim-core**: Adds the *invitations* badge. [\#4033](https://github.com/decidim/decidim/pull/4033)
+- **decidim-initiatives**: Adds the *published initiatives* badge. [\#4033](https://github.com/decidim/decidim/pull/4033)
 - **decidim-core**: Add link to admin edit from public pages. [\#3978](https://github.com/decidim/decidim/pull/3978)
 
 **Changed**:
@@ -78,6 +96,7 @@
 
 **Fixed**:
 
+- **decidim-participatory_processes**: Fix hastag display on participatory processes. [\#4024](https://github.com/decidim/decidim/pull/4024)
 - **decidim-core**: Fix day date translation on profile notifications. [\#3994](https://github.com/decidim/decidim/pull/3994)
 - **decidim-accountability**: Fix accountability progress to be between 0 and 100 if provided. [\#3952](https://github.com/decidim/decidim/pull/3952)
 - **decidim-initiatives**: Fix initiative edition when state is not published. [\#3930](https://github.com/decidim/decidim/pull/3930)
@@ -108,6 +127,7 @@
 - **decidim-proposals**: Hide withdrawn proposals from index [\#4012](https://github.com/decidim/decidim/pull/4012)
 - **decidim-comments**: Users should never be notified about their own comments. [\#3888](https://github.com/decidim/decidim/pull/3888)
 - **decidim-core**: Consider only users in profile follow counters. [\#3887](https://github.com/decidim/decidim/pull/3887)
+- **decidim-accountability**: Fix results string in the home [\#3537](https://github.com/decidim/decidim/pull/3537)
 - **decidim-core**: Make API authors optional [\#4014](https://github.com/decidim/decidim/pull/4014)
 - **decidim**: Make sure the same task on each decidim module is only loaded once. [\#3890](https://github.com/decidim/decidim/pull/3890)
 - **decidim**: Correctly pass cells options to sized card cells [\#4017](https://github.com/decidim/decidim/pull/4017)
